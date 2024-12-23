@@ -1,0 +1,26 @@
+name: 📝 Draft or update next release
+concurrency: draft_or_update_next_release
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  prepare-deployment:
+    name: 📝 Draft or update next release
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: ♻️ Checkout
+        uses: actions/checkout@v4
+
+      - name: 📝 Release/Draft next release
+        uses: release-drafter/release-drafter@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
