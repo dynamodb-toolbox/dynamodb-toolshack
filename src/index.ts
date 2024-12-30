@@ -29,7 +29,7 @@ export class Synchronizer<TABLE extends Table, ENTITIES extends Entity[]> extend
   [$metadata]: Metadata;
   [$awsConfig]?: AWSConfig
 
-  constructor(table: TABLE, entities: ENTITIES) {
+  constructor(table: TABLE, entities = [] as unknown as ENTITIES) {
     super(table, entities)
 
     this.apiUrl = 'https://api.dynamodb-toolshack.com'
