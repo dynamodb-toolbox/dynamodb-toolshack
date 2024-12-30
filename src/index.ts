@@ -25,9 +25,9 @@ export class Synchronizer<TABLE extends Table, ENTITIES extends Entity[]> extend
   ENTITIES
 > {
   apiUrl: string;
+  [$awsConfig]?: AWSConfig;
   [$accessRole]?: AccessRole;
-  [$metadata]: Metadata;
-  [$awsConfig]?: AWSConfig
+  [$metadata]: Metadata
 
   constructor(table: TABLE, entities = [] as unknown as ENTITIES) {
     super(table, entities)
@@ -42,12 +42,19 @@ export class Synchronizer<TABLE extends Table, ENTITIES extends Entity[]> extend
     return new Synchronizer(this.table, nextEntities)
   }
 
-  accessRole(accessRole: AccessRole) {
-    this[$accessRole] = accessRole
+  awsConfig(awsConfig: AWSConfig): Synchronizer<TABLE, ENTITIES> {
+    this[$awsConfig] = awsConfig
+    return this
   }
 
-  metadata(metadata: Metadata) {
+  accessRole(accessRole: AccessRole): Synchronizer<TABLE, ENTITIES> {
+    this[$accessRole] = accessRole
+    return this
+  }
+
+  metadata(metadata: Metadata): Synchronizer<TABLE, ENTITIES> {
     this[$metadata] = metadata
+    return this
   }
 
   async sync({
