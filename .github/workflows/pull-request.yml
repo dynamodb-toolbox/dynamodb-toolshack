@@ -23,7 +23,7 @@ jobs:
           node-version: ${{ matrix.node }}
 
       - name: 🚚 Install dependencies
-        run: npm ci --legacy-peer-deps
+        run: npm install
 
       - name: 📌 Install TS at correct version
         run: npm i typescript@${{ matrix.typescript }}

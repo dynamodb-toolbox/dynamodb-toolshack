@@ -1,8 +1,5 @@
-import type { Entity } from 'dynamodb-toolbox/entity'
-import { EntityDTO } from 'dynamodb-toolbox/entity/actions/dto'
-import type { Table } from 'dynamodb-toolbox/table'
-import { $entities, TableAction } from 'dynamodb-toolbox/table'
-import { TableDTO } from 'dynamodb-toolbox/table/actions/dto'
+import type { Entity, Table } from 'dynamodb-toolbox'
+import { $entities, EntityDTO, TableAction, TableDTO } from 'dynamodb-toolbox'
 
 import { $accessRole, $awsConfig, $metadata } from './constants.js'
 import { deleteEntity } from './deleteEntity.js'
