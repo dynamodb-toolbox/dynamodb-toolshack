@@ -42,16 +42,19 @@ export class Synchronizer<TABLE extends Table, ENTITIES extends Entity[]> extend
     return new Synchronizer(this.table, nextEntities)
   }
 
-  awsConfig(awsConfig: AWSConfig) {
+  awsConfig(awsConfig: AWSConfig): Synchronizer<TABLE, ENTITIES> {
     this[$awsConfig] = awsConfig
+    return this
   }
 
-  accessRole(accessRole: AccessRole) {
+  accessRole(accessRole: AccessRole): Synchronizer<TABLE, ENTITIES> {
     this[$accessRole] = accessRole
+    return this
   }
 
-  metadata(metadata: Metadata) {
+  metadata(metadata: Metadata): Synchronizer<TABLE, ENTITIES> {
     this[$metadata] = metadata
+    return this
   }
 
   async sync({
