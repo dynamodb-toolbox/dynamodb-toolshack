@@ -17,7 +17,7 @@
     "sourceType": "module"
   },
   "rules": {
-    "import/extensions": ["error", "always"],
+    "import/extensions": ["error", "ignorePackages"],
     "prettier/prettier": "error",
     "linebreak-style": ["error", "unix"],
     "quotes": [
