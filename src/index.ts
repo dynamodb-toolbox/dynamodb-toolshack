@@ -11,13 +11,22 @@ import { putEntity } from './putEntity.js'
 import { putTable } from './putTable.js'
 import type { AWSConfig, FetchOpts } from './types.js'
 
-interface Metadata {
+interface EntityMetadata {
+  entityIcon?: string
+  entityTitle?: string
+  entityDescription?: string
+}
+
+interface Metadata<ENTITIES extends Entity[]> {
   awsAccountTitle?: string
   awsAccountColor?: string
   awsAccountDescription?: string
-  tableIcon: string
+  tableIcon?: string
   tableTitle?: string
   tableDescription?: string
+  entities?: Entity[] extends ENTITIES
+    ? Record<string, EntityMetadata>
+    : { [ENTITY in ENTITIES[number] as ENTITY['name']]?: EntityMetadata }
 }
 
 export class Synchronizer<TABLE extends Table, ENTITIES extends Entity[]> extends TableAction<
@@ -27,13 +36,13 @@ export class Synchronizer<TABLE extends Table, ENTITIES extends Entity[]> extend
   apiUrl: string;
   [$awsConfig]?: AWSConfig;
   [$accessRole]?: AccessRole;
-  [$metadata]: Metadata
+  [$metadata]: Metadata<ENTITIES>
 
   constructor(table: TABLE, entities = [] as unknown as ENTITIES) {
     super(table, entities)
 
     this.apiUrl = 'https://api.dynamodb-toolshack.com'
-    this[$metadata] = { tableIcon: 'database-zap' }
+    this[$metadata] = {}
   }
 
   entities<NEXT_ENTITIES extends Entity[]>(
@@ -52,7 +61,7 @@ export class Synchronizer<TABLE extends Table, ENTITIES extends Entity[]> extend
     return this
   }
 
-  metadata(metadata: Metadata): Synchronizer<TABLE, ENTITIES> {
+  metadata(metadata: Metadata<ENTITIES>): Synchronizer<TABLE, ENTITIES> {
     this[$metadata] = metadata
     return this
   }
@@ -96,7 +105,7 @@ export class Synchronizer<TABLE extends Table, ENTITIES extends Entity[]> extend
       throw new Error('tableName should be provided')
     }
 
-    const { tableIcon, tableTitle, tableDescription } = this[$metadata]
+    const { tableIcon = 'database-zap', tableTitle, tableDescription } = this[$metadata]
     await putTable(
       {
         tableName,
@@ -129,9 +138,23 @@ export class Synchronizer<TABLE extends Table, ENTITIES extends Entity[]> extend
 
     for (const entity of this[$entities]) {
       const { name: entityName, ...entityDTO } = entity.build(EntityDTO).toJSON()
+      const {
+        entityIcon: icon = 'database-zap',
+        entityDescription: description,
+        entityTitle: title
+      } = (this[$metadata].entities as Record<string, EntityMetadata>)?.[entityName] ?? {}
 
       await putEntity(
-        { awsAccountId, awsRegion, tableName, ...entityDTO, entityName, icon: 'database-zap' },
+        {
+          awsAccountId,
+          awsRegion,
+          tableName,
+          ...entityDTO,
+          entityName,
+          icon,
+          ...(description !== undefined ? { description } : {}),
+          ...(title !== undefined ? { title } : {})
+        },
         fetchOpts
       )
 
