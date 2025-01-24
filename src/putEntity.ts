@@ -5,6 +5,7 @@ import type { AWSConfig, FetchOpts } from './types.js'
 interface Entity extends Omit<IEntityDTO, 'name' | 'table'> {
   entityName: IEntityDTO['name']
   icon: string
+  title?: string
   description?: string
 }
 
