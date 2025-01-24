@@ -33,6 +33,8 @@ export class Synchronizer<TABLE extends Table, ENTITIES extends Entity[]> extend
   TABLE,
   ENTITIES
 > {
+  static override actionName = 'ddb-toolshack-sync' as const
+
   apiUrl: string;
   [$awsConfig]?: AWSConfig;
   [$accessRole]?: AccessRole;
