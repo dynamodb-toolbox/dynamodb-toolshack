@@ -2,10 +2,9 @@ import type { ITableDTO } from 'dynamodb-toolbox'
 
 import type { AWSConfig, FetchOpts } from './types.js'
 
-interface Table extends AWSConfig, Omit<ITableDTO, 'name'> {
+interface Table extends AWSConfig, ITableDTO {
   awsAccountId: string
   awsRegion: string
-  tableName: ITableDTO['name']
   icon: string
   title?: string
   description?: string

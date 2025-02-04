@@ -102,7 +102,7 @@ export class Synchronizer<TABLE extends Table, ENTITIES extends Entity[]> extend
       fetchOpts
     )
 
-    const { name: tableName = optionsTableName, ...tableDTO } = this.table.build(TableDTO).toJSON()
+    const { tableName = optionsTableName, ...tableDTO } = this.table.build(TableDTO).toJSON()
     if (tableName === undefined) {
       throw new Error('tableName should be provided')
     }
@@ -139,7 +139,7 @@ export class Synchronizer<TABLE extends Table, ENTITIES extends Entity[]> extend
     }
 
     for (const entity of this[$entities]) {
-      const { name: entityName, ...entityDTO } = entity.build(EntityDTO).toJSON()
+      const { entityName, ...entityDTO } = entity.build(EntityDTO).toJSON()
       const {
         entityIcon: icon = 'database-zap',
         entityDescription: description,
