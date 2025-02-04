@@ -2,8 +2,7 @@ import type { IEntityDTO } from 'dynamodb-toolbox'
 
 import type { AWSConfig, FetchOpts } from './types.js'
 
-interface Entity extends Omit<IEntityDTO, 'name' | 'table'> {
-  entityName: IEntityDTO['name']
+interface Entity extends Omit<IEntityDTO, 'table'> {
   icon: string
   title?: string
   description?: string
